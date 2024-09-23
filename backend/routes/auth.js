@@ -5,7 +5,7 @@ const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET="Manishisagooddevlop$r"
+const JWT_SECRET = "Manishisagooddevlop$r"
 
 
 // Create a User Using:POST "/api/auth/sign-up". Doesn't require Auth
@@ -30,7 +30,7 @@ router.post('/sign-up', [
         }
 
         const salt = await bcrypt.genSalt(10);
-       const secPass = await bcrypt.hash(req.body.password,salt)
+        const secPass = await bcrypt.hash(req.body.password, salt)
         // Create a new user
         let user = await User.create({
             name: req.body.name,
@@ -38,13 +38,13 @@ router.post('/sign-up', [
             password: secPass,
         })
 
-        const data ={
-            user:{
-                id:user.id
+        const data = {
+            user: {
+                id: user.id
             }
         }
 
-        const authtoken= jwt.sign(data,JWT_SECRET);
+        const authtoken = jwt.sign(data, JWT_SECRET);
         console.log(authtoken);
 
         // .then(user => res.json(user))
@@ -57,7 +57,7 @@ router.post('/sign-up', [
         // res.send(req.body);
 
 
-        res.status(201).json({ message: 'User created successfully', authtoken});
+        res.status(201).json({ message: 'User created successfully', authtoken });
     } catch (error) {
         console.error(error.message);
         res.status(500).send("Some Error occured");
@@ -65,6 +65,47 @@ router.post('/sign-up', [
 });
 
 
+//Authentication a User using: POST "/api/auth/login". No login required
 
+router.post('/login', [
+    body('email').isEmail(),
+    body('password').isLength({ min: 5 }),
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email, password } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ error: "Please try to login with correct credentials" });
+        }
+
+        const passwordCompare = await bcrypt.compare(password, user.password);
+        if (!passwordCompare) {
+            return res.status(400).json({ error: "Please try to login with correct credentials" });
+        }
+        
+        const data = {
+            user: {
+                id: user.id
+            }
+        }
+
+        const authtoken = jwt.sign(data, JWT_SECRET);
+        console.log(authtoken);
+
+        res.status(201).json({ message: 'login successfully', authtoken });
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Some Error occured");
+    }
+
+
+});
 
 module.exports = router
