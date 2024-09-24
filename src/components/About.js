@@ -1,16 +1,31 @@
-import React, { useContext, useEffect } from 'react'
-import noteContext from '../context/notes/noteContext'
+import React from 'react';
 
 function About() {
-    const a = useContext(noteContext);
-    useEffect(() => {
-        a.update();
-        //eslint-disable-next-line
-    }, []);
+
 
     return (
         <div>
-            This is about {a.state.name} and he is in class {a.state.class}
+            <h1>Add a Note </h1>
+            <div className="container my-3">
+                <form>
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="test" class="form-control" id="title" />
+                        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripation" class="form-label">Descripation</label>
+                        <input type="text" class="form-control" id="descripation" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="tag" class="form-label">Tag</label>
+                        <input type="text" class="form-control" id="tag" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
         </div>
     )
 }
