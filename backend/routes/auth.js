@@ -61,7 +61,7 @@ router.post('/sign-up', [
         res.status(201).json({ message: 'User created successfully', authtoken });
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Some Error occured");
+        res.status(500).send("Internal Server Error");
     }
 });
 
@@ -122,7 +122,7 @@ router.post('/getuser',fetchuser, async (req, res) => {
 
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Internal Server Error");;
+        res.status(500).send("Internal Server Error");
 
     }
 })
