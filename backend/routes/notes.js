@@ -26,8 +26,8 @@ router.get('/fetchallnotes', fetchuser, async (req, res) => {
 
 router.post('/create-notes', fetchuser,
     [
-        body('title' ).isLength({min:3}),
-        body('description').isLength({min:5}),
+        body('title').isLength({ min: 3 }),
+        body('description').isLength({ min: 5 }),
     ],
     async (req, res) => {
         //console.log(req.body.description);
@@ -58,5 +58,33 @@ router.post('/create-notes', fetchuser,
     })
 
 
+// Route 3 
+// Update an existing Notes using: POST "/api/notes/update-notes". Login required
+
+router.put('/update-notes/:id', fetchuser, async (req, res) => {
+    //console.log(req.body.description);
+    const { title, description, tag } = req.body;
+
+    //Create a newNote object
+    const newNote = {};
+    if (title) { newNote.title = title };
+    if (description) { newNote.description = description };
+    if (tag) { newNote.tag = tag }
+
+    // Find the note to be update and update it
+
+    let note = await Note.findById(req.params.id);
+    if(!note){ 
+        res.status(404).send("Not found");
+    }
+
+    if(note.user.toString() !== req.user.id){
+        return res.status(401).send("Not Allowed");
+    }
+
+    const notes = await Note.findByIdAndUpdate(req.params.id,{$set:newNote},{new:true});
+    res.status(201).json({ message: 'Notes updated created successfully', notes });
+
+})
 
 module.exports = router
