@@ -70,13 +70,14 @@ const NoteState = (props) => {
 
   }
   // Delete a Note
-  const deleteNote = () => {
-    // eslint-disable-next-line
-
+  const deleteNote = (id) => {
+    console.log("Deleting the note with id" + id);
+    const newNote = notes.filter((note) => { return note._id !== id });
+    setNotes(newNote);
   }
 
   // Edit a Note
-  const editNote = () => {
+  const editNote = (id) => {
     // eslint-disable-next-line
 
   }
