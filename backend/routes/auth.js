@@ -15,6 +15,7 @@ router.post('/sign-up', [
     body('email').isEmail(),
     body('password').isLength({ min: 5 }),
 ], async (req, res) => {
+    let success = false;
     // Finds the validation errors in this request and wraps them in an object with handy functions
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -27,7 +28,7 @@ router.post('/sign-up', [
 
         let userdata = await User.findOne({ email: req.body.email });
         if (userdata) {
-            return res.status(400).json({ error: "Sorry a user with this email already exist" })
+            return res.status(400).json({ success, error: "Sorry a user with this email already exist" })
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -57,8 +58,8 @@ router.post('/sign-up', [
         // user.save();
         // res.send(req.body);
 
-
-        res.status(201).json({ message: 'User created successfully', authtoken });
+        success = true;
+        res.status(201).json({ success, message: 'User created successfully', authtoken });
     } catch (error) {
         // console.error(error.message);
         res.status(500).send("Internal Server Error");
@@ -84,7 +85,7 @@ router.post('/login', [
     try {
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ success,error: "Please try to login with correct credentials" });
+            return res.status(400).json({ success, error: "Please try to login with correct credentials" });
         }
 
         const passwordCompare = await bcrypt.compare(password, user.password);
