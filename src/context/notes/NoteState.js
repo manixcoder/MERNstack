@@ -15,7 +15,7 @@ const NoteState = (props) => {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
-        'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjZmMWJjZjk2MTQyMWNhNDRmY2I5YjU0In0sImlhdCI6MTcyNzEyOTQ3NH0.agWnS3rNckaoXKxEfQohkP2hOj0f6EyBQdJqCkFygBE'
+        'auth-token': localStorage.getItem('token')
       }
     });
     const json = await response.json();
@@ -32,7 +32,7 @@ const NoteState = (props) => {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
-        'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjZmMWJjZjk2MTQyMWNhNDRmY2I5YjU0In0sImlhdCI6MTcyNzEyOTQ3NH0.agWnS3rNckaoXKxEfQohkP2hOj0f6EyBQdJqCkFygBE'
+        'auth-token': localStorage.getItem('token')
       },
       body: JSON.stringify({ title, description, tag })
     });
@@ -51,12 +51,12 @@ const NoteState = (props) => {
       method: "DELETE",
       headers: {
         'Content-Type': 'application/json',
-        'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjZmMWJjZjk2MTQyMWNhNDRmY2I5YjU0In0sImlhdCI6MTcyNzEyOTQ3NH0.agWnS3rNckaoXKxEfQohkP2hOj0f6EyBQdJqCkFygBE'
+        'auth-token': localStorage.getItem('token')
       }
     });
-    const json = response.json();
+    const json = await response.json();
 
-    console.log("Deleting the note with id" + id);
+    console.log("Deleting the note with id" + json);
     const newNote = notes.filter((note) => { return note._id !== id });
     setNotes(newNote);
   }
@@ -68,11 +68,12 @@ const NoteState = (props) => {
       method: "PUT",
       headers: {
         'Content-Type': 'application/json',
-        'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjZmMWJjZjk2MTQyMWNhNDRmY2I5YjU0In0sImlhdCI6MTcyNzEyOTQ3NH0.agWnS3rNckaoXKxEfQohkP2hOj0f6EyBQdJqCkFygBE'
+        'auth-token': localStorage.getItem('token')
       },
       body: JSON.stringify({ title, description, tag })
     });
     const json = await response.json();
+    console.log(json);
 
     let newNotes =JSON.parse(JSON.stringify(notes));
     // Logic to edit in client

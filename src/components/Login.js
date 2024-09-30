@@ -27,6 +27,7 @@ function Login() {
     }
     return (
         <div>
+            <h2>NootBook login</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email address</label>
