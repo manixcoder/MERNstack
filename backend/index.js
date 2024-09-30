@@ -1,6 +1,6 @@
 const connectToMongo = require('./db');
 
-var cors =require('cors');
+const cors = require('cors');
 connectToMongo();
 const express = require('express')
 const app = express()
