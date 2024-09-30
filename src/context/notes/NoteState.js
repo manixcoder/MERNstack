@@ -36,19 +36,11 @@ const NoteState = (props) => {
       },
       body: JSON.stringify({ title, description, tag })
     });
-    const json = response.json();
-    console.log('Adding a new note');
-    const note = {
-      "_id": "66f1e7b1f2709dfgf8129be5ac2c",
-      "user": "66f1bcf961421ca44fcb9b54",
-      "title": title,
-      "description": description,
-      "tag": tag,
-      "date": "2024-09-23T22:12:01.863Z",
-      "__v": 0
-    };
-    // eslint-disable-next-line
+    const note = await response.json();
     setNotes(notes.concat(note))
+    console.log('Adding a new note');
+    
+    
 
   }
   // Delete a Note
@@ -80,18 +72,21 @@ const NoteState = (props) => {
       },
       body: JSON.stringify({ title, description, tag })
     });
-    const json = response.json();
+    const json = await response.json();
 
-    // TODO : API call
-    for (let index = 0; index < notes.length; index++) {
-      const element = notes[index];
+    let newNotes =JSON.parse(JSON.stringify(notes));
+    // Logic to edit in client
+    for (let index = 0; index < newNotes.length; index++) {
+      const element = newNotes[index];
       if (element._id === id) {
-        element.title = title;
-        element.description = description;
-        element.tag = tag;
+        newNotes.title = title;
+        newNotes.description = description;
+        newNotes.tag = tag;
+        break;
       }
-
+      
     }
+    setNotes(newNotes);
   }
   return (
     <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote, getNotes }}>
