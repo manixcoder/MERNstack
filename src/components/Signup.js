@@ -49,7 +49,7 @@ function Signup() {
                     <input type="password" className="form-control" id="cpassword" name="cpassword" onChange={onChange} minLength={5} required/>
                 </div>
 
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button  type="submit" className="btn btn-primary">Submit</button>
             </form>
         </div>
     )
