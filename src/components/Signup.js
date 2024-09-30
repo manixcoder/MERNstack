@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-function Signup() {
+function Signup(props) {
     const host = "http://localhost:5000";
     const [credentials, setCredentials] = useState({name:'', email: "", password: "" ,cpassword:""});
     let navigate = useNavigate(); // updated hook
@@ -21,6 +21,8 @@ function Signup() {
             //Save the auth token and redirct
             localStorage.setItem('token',json.authtoken);
             navigate('/');
+        }else{
+            props.showAlert("Invalid credentials","danger");
         }
     }
     const onChange=(e)=>{
@@ -28,6 +30,7 @@ function Signup() {
     }
     return (
         <div className='container'>
+            <h2>User Sign Up</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">Name</label>
